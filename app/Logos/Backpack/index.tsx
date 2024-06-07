@@ -2,7 +2,7 @@ export function BackPack() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="w-8 h-8"
+      className="w-10 h-10"
       viewBox="0 0 100 100"
     >
       <path

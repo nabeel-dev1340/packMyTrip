@@ -1,12 +1,38 @@
 import { BackPack } from "@/app/Logos/Backpack";
-export default function Navbar() {
+import { auth } from "@/auth";
+import AvatarDropdown from "../AvatarDropdown";
+
+export default async function Navbar() {
+  const session = await auth();
+
+  let userElement;
+  if (!session?.user) {
+    // That means user is not logged in
+    userElement = (
+      <a
+        href="/login"
+        className="bg-blue-500 hover:bg-blue-400 text-white py-2 px-4 rounded-3xl shadow-sm"
+      >
+        Sign in
+      </a>
+    );
+  } else {
+    // User is logged in
+    const avatarURL = session.user.image as string;
+    const name = session.user.name as string;
+    const email = session.user.email as string;
+    userElement = (
+      <AvatarDropdown avatarURL={avatarURL} name={name} email={email} />
+    );
+  }
+
   return (
-    <nav className="max-w-7xl mx-auto">
+    <nav className="max-w-7xl mx-auto mt-1">
       <div className="rounded-sm">
         <div className="mx-4 flex items-center justify-between">
-          <a href="/" className="flex items-center py-4 space-x-2">
+          <a href="/" className="flex items-center py-4 space-x-1">
             <BackPack />
-            <span className="font-bold text-xl hover:text-blue-500 transition duration-500">
+            <span className="font-concert font-bold lg:text-3xl text-2xl text-gray-800 hover:text-blue-500 transition duration-500">
               PackMyTrip
             </span>
           </a>
@@ -17,9 +43,7 @@ export default function Navbar() {
             >
               Create Essentials Pack
             </a>
-            <button className="bg-blue-500 hover:bg-blue-400 text-white py-2 px-4 rounded-3xl shadow-sm">
-              Sign in
-            </button>
+            {userElement}
           </div>
         </div>
       </div>
